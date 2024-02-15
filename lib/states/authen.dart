@@ -1,11 +1,14 @@
+import 'package:expsugarone/states/create_new_account.dart';
 import 'package:expsugarone/utility/app_constant.dart';
 import 'package:expsugarone/utility/app_controller.dart';
+import 'package:expsugarone/widgets/widget_button.dart';
 import 'package:expsugarone/widgets/widget_form.dart';
 import 'package:expsugarone/widgets/widget_icon_button.dart';
 import 'package:expsugarone/widgets/widget_image_asset.dart';
 import 'package:expsugarone/widgets/widget_text.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:getwidget/getwidget.dart';
 
 class Authen extends StatefulWidget {
   const Authen({super.key});
@@ -34,21 +37,9 @@ class _AuthenState extends State<Authen> {
                   child: Column(
                     children: [
                       displayLogoAndAppName(),
-                      WidgetForm(
-                        hint: 'Email :',
-                        sufficWidget: Icon(Icons.email),
-                      ),
-                      Obx(() => WidgetForm(
-                            hint: 'Password :',
-                            obsecu: appController.redEye.value,
-                            sufficWidget: WidgetIconButton(
-                              iconData: appController.redEye.value ? Icons.remove_red_eye : Icons.remove_red_eye_outlined,
-                              pressFunc: () {
-                                appController.redEye.value =
-                                    !appController.redEye.value;
-                              },
-                            ),
-                          )),
+                      emailForm(),
+                      passwordForm(),
+                      loginButton()
                     ],
                   ),
                 ),
@@ -57,6 +48,46 @@ class _AuthenState extends State<Authen> {
           ],
         ),
       ),
+      bottomSheet: WidgetButton(
+        label: 'Create New Accout',
+        pressFunc: () {
+          Get.to(const CreateNewAccount());
+        },
+        gfButtonType: GFButtonType.transparent,
+      ),
+    );
+  }
+
+  Container loginButton() {
+    return Container(
+      margin: const EdgeInsets.only(top: 16),
+      width: 250,
+      child: WidgetButton(
+        label: 'login',
+        pressFunc: () {},
+      ),
+    );
+  }
+
+  Obx passwordForm() {
+    return Obx(() => WidgetForm(
+          hint: 'Password :',
+          obsecu: appController.redEye.value,
+          sufficWidget: WidgetIconButton(
+            iconData: appController.redEye.value
+                ? Icons.remove_red_eye
+                : Icons.remove_red_eye_outlined,
+            pressFunc: () {
+              appController.redEye.value = !appController.redEye.value;
+            },
+          ),
+        ));
+  }
+
+  WidgetForm emailForm() {
+    return WidgetForm(
+      hint: 'Email :',
+      sufficWidget: Icon(Icons.email),
     );
   }
 
