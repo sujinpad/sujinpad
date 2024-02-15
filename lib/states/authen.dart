@@ -26,7 +26,7 @@ class Authen extends StatelessWidget {
                         hint: 'Email :',sufficWidget: Icon(Icons.email),
                       ),
                       const WidgetForm(
-                        hint: 'Password :',
+                        hint: 'Password :',obsecu: true,
                       ),
                     ],
                   ),
