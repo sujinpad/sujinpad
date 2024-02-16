@@ -9,24 +9,28 @@ class WidgetForm extends StatelessWidget {
     this.hint,
     this.sufficWidget,
     this.obsecu,
+    this.validatorFunc,
   }) : super(key: key);
 
   final String? hint;
   final Widget? sufficWidget;
   final bool? obsecu;
+  final String? Function(String?)? validatorFunc;
 
   @override
   Widget build(BuildContext context) {
     return Container(
       margin: const EdgeInsets.only(top: 16),
-      child: TextFormField( obscureText: obsecu ?? false,
+      child: TextFormField( 
+        validator: validatorFunc,
+        obscureText: obsecu ?? false,
         decoration: InputDecoration(
           filled: true,
           fillColor: AppConstant.fieldColor,
-         // border: OutlineInputBorder(borderRadius: BorderRadius.circular(50)),
-         border:InputBorder.none,
-         hintText: hint,
-         suffixIcon: sufficWidget,
+          // border: OutlineInputBorder(borderRadius: BorderRadius.circular(50)),
+          border: InputBorder.none,
+          hintText: hint,
+          suffixIcon: sufficWidget,
         ),
       ),
     );
