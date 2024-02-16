@@ -11,6 +11,7 @@ class WidgetForm extends StatelessWidget {
     this.obsecu,
     this.validatorFunc,
     this.labelWidget,
+    this.textEditingController,
   }) : super(key: key);
 
   final String? hint;
@@ -19,11 +20,14 @@ class WidgetForm extends StatelessWidget {
   final String? Function(String?)? validatorFunc;
   final Widget? labelWidget;
 
+  final TextEditingController? textEditingController;
+
   @override
   Widget build(BuildContext context) {
     return Container(
       margin: const EdgeInsets.only(top: 16),
-      child: TextFormField( 
+      child: TextFormField(
+        controller: textEditingController,
         validator: validatorFunc,
         obscureText: obsecu ?? false,
         decoration: InputDecoration(

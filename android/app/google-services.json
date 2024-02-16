@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "489212645252",
+    "project_id": "expproject-acdab",
+    "storage_bucket": "expproject-acdab.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:489212645252:android:672f9af32d27bea30997d1",
+        "android_client_info": {
+          "package_name": "com.khing.expsugarone"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCEi7n2teCj-G47yx99fEmz6hC69UyO_ak"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

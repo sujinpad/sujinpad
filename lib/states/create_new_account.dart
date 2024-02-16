@@ -24,6 +24,10 @@ class _CreateNewAccountState extends State<CreateNewAccount> {
 
   final formKey = GlobalKey<FormState>();
 
+  TextEditingController nameController = TextEditingController();
+  TextEditingController emailController = TextEditingController();
+  TextEditingController passwordController = TextEditingController();
+
   @override
   void initState() {
     super.initState();
@@ -51,6 +55,7 @@ class _CreateNewAccountState extends State<CreateNewAccount> {
                   child: Column(
                     children: [
                       WidgetForm(
+                        textEditingController: nameController,
                         validatorFunc: (p0) {
                           if (p0?.isEmpty ?? true) {
                             return 'โปรดกรอกชื่อด้วยนะจ๊ะ';
@@ -61,6 +66,7 @@ class _CreateNewAccountState extends State<CreateNewAccount> {
                         labelWidget: WidgetText(data: 'Display Name'),
                       ),
                       WidgetForm(
+                        textEditingController: emailController,
                         validatorFunc: (p0) {
                           if (p0?.isEmpty ?? true) {
                             return 'โปรดE-mail ด้วยนะจ๊ะ';
@@ -71,6 +77,7 @@ class _CreateNewAccountState extends State<CreateNewAccount> {
                         labelWidget: WidgetText(data: 'Email'),
                       ),
                       WidgetForm(
+                        textEditingController: passwordController,
                         validatorFunc: (p0) {
                           if (p0?.isEmpty ?? true) {
                             return 'โปรด Passwordด้วยนะจ๊ะ';
@@ -88,11 +95,15 @@ class _CreateNewAccountState extends State<CreateNewAccount> {
                               'ยังไม่มีรูปภาพ',
                               'เลือกรูปภาพ',
                               backgroundColor: GFColors.DANGER,
-                              colorText:  GFColors.WHITE,
+                              colorText: GFColors.WHITE,
                             );
                           } else if (formKey.currentState!.validate()) {
-                            
-                          } 
+                            AppService().processCreateNewAccount(
+                              name: nameController.text,
+                               email: emailController.text,
+                                password: passwordController.text,
+                            );
+                          }
                         },
                       )
                     ],
