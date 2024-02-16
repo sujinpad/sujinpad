@@ -1,3 +1,4 @@
+import 'package:expsugarone/utility/app_dialog.dart';
 import 'package:expsugarone/widgets/widget_button.dart';
 import 'package:expsugarone/widgets/widget_form.dart';
 import 'package:expsugarone/widgets/widget_icon_button.dart';
@@ -30,7 +31,10 @@ class CreateNewAccount extends StatelessWidget {
                     WidgetForm(labelWidget: WidgetText(data: 'Password'),),
                     WidgetButton(
                       label: 'Create',
-                      pressFunc: () {},
+                      pressFunc: () {
+
+                        
+                      },
                     )
                   ],
                 ),
@@ -63,7 +67,11 @@ class CreateNewAccount extends StatelessWidget {
                 bottom: 0,
                 child: WidgetIconButton(
                   iconData: Icons.photo_camera,
-                  pressFunc: () {},
+                  pressFunc: () {
+
+                    AppDialog().normalDailog(title: 'Camera or Gallary');
+
+                  },
                 ),
               )
             ],

@@ -4,5 +4,4 @@ class AppController extends GetxController{
 
 RxBool  redEye = true.obs;
 
-  
 }
