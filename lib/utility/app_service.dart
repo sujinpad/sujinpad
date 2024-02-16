@@ -28,7 +28,16 @@ class AppService {
   }) async {
     await FirebaseAuth.instance
         .createUserWithEmailAndPassword(email: email, password: password)
-        .then((value) => null)
+        .then((value)async {
+
+         String uid =value.user!.uid;
+         print('uid :$uid');
+
+        String nameFile = '$uid.jpg';
+
+
+
+        })
         .catchError((onError) {
       Get.snackbar(onError.code, onError.message,
           backgroundColor: GFColors.DANGER, colorText: GFColors.WHITE);
