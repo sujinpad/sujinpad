@@ -9,6 +9,7 @@ import 'package:expsugarone/widgets/widget_image_file.dart';
 import 'package:expsugarone/widgets/widget_text.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:getwidget/getwidget.dart';
 import 'package:image_picker/image_picker.dart';
 
 class CreateNewAccount extends StatefulWidget {
@@ -24,6 +25,14 @@ class _CreateNewAccountState extends State<CreateNewAccount> {
   final formKey = GlobalKey<FormState>();
 
   @override
+  void initState() {
+    super.initState();
+    if (appController.files.isNotEmpty) {
+      appController.files.clear();
+    }
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
@@ -37,21 +46,54 @@ class _CreateNewAccountState extends State<CreateNewAccount> {
             children: [
               SizedBox(
                 width: Get.width * 0.7,
-                child: Form(key: formKey,
+                child: Form(
+                  key: formKey,
                   child: Column(
                     children: [
                       WidgetForm(
+                        validatorFunc: (p0) {
+                          if (p0?.isEmpty ?? true) {
+                            return 'โปรดกรอกชื่อด้วยนะจ๊ะ';
+                          } else {
+                            return null;
+                          }
+                        },
                         labelWidget: WidgetText(data: 'Display Name'),
                       ),
                       WidgetForm(
+                        validatorFunc: (p0) {
+                          if (p0?.isEmpty ?? true) {
+                            return 'โปรดE-mail ด้วยนะจ๊ะ';
+                          } else {
+                            return null;
+                          }
+                        },
                         labelWidget: WidgetText(data: 'Email'),
                       ),
                       WidgetForm(
+                        validatorFunc: (p0) {
+                          if (p0?.isEmpty ?? true) {
+                            return 'โปรด Passwordด้วยนะจ๊ะ';
+                          } else {
+                            return null;
+                          }
+                        },
                         labelWidget: WidgetText(data: 'Password'),
                       ),
                       WidgetButton(
                         label: 'Create',
-                        pressFunc: () {},
+                        pressFunc: () {
+                          if (appController.files.isEmpty) {
+                            Get.snackbar(
+                              'ยังไม่มีรูปภาพ',
+                              'เลือกรูปภาพ',
+                              backgroundColor: GFColors.DANGER,
+                              colorText:  GFColors.WHITE,
+                            );
+                          } else if (formKey.currentState!.validate()) {
+                            
+                          } 
+                        },
                       )
                     ],
                   ),
