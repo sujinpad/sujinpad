@@ -1,3 +1,5 @@
+import 'package:expsugarone/widgets/widget_button.dart';
+import 'package:expsugarone/widgets/widget_form.dart';
 import 'package:expsugarone/widgets/widget_icon_button.dart';
 import 'package:expsugarone/widgets/widget_image_asset.dart';
 import 'package:expsugarone/widgets/widget_text.dart';
@@ -13,12 +15,36 @@ class CreateNewAccount extends StatelessWidget {
       appBar: AppBar(
         title: const WidgetText(data: 'Create New Account'),
       ),
-      body: displayImages(),
+      body: ListView(
+        children: [
+          displayImages(),
+          Row(  mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              SizedBox(
+                width: Get.width * 0.7,
+              
+                child: Column(
+                  children: [
+                    WidgetForm(labelWidget: WidgetText(data: 'Display Name'),),
+                    WidgetForm(labelWidget: WidgetText(data: 'Email'),),
+                    WidgetForm(labelWidget: WidgetText(data: 'Password'),),
+                    WidgetButton(
+                      label: 'Create',
+                      pressFunc: () {},
+                    )
+                  ],
+                ),
+              ),
+            ],
+          ),
+        ],
+      ),
     );
   }
 
   Row displayImages() {
-    return Row(mainAxisAlignment: MainAxisAlignment.center,
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.center,
       children: [
         SizedBox(
           width: Get.width * 0.5,
@@ -32,11 +58,12 @@ class CreateNewAccount extends StatelessWidget {
                   //  size: Get.width * 0.3,
                 ),
               ),
-              Positioned(right: 0,bottom: 0,
+              Positioned(
+                right: 0,
+                bottom: 0,
                 child: WidgetIconButton(
                   iconData: Icons.photo_camera,
-                  pressFunc: () {                        
-                  },
+                  pressFunc: () {},
                 ),
               )
             ],

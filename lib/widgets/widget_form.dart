@@ -10,12 +10,14 @@ class WidgetForm extends StatelessWidget {
     this.sufficWidget,
     this.obsecu,
     this.validatorFunc,
+    this.labelWidget,
   }) : super(key: key);
 
   final String? hint;
   final Widget? sufficWidget;
   final bool? obsecu;
   final String? Function(String?)? validatorFunc;
+  final Widget? labelWidget;
 
   @override
   Widget build(BuildContext context) {
@@ -25,6 +27,7 @@ class WidgetForm extends StatelessWidget {
         validator: validatorFunc,
         obscureText: obsecu ?? false,
         decoration: InputDecoration(
+          label: labelWidget,
           filled: true,
           fillColor: AppConstant.fieldColor,
           // border: OutlineInputBorder(borderRadius: BorderRadius.circular(50)),
