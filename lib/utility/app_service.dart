@@ -13,6 +13,7 @@ import 'package:expsugarone/widgets/widget_text.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
+import 'package:geolocator/geolocator.dart';
 import 'package:get/get.dart';
 import 'package:getwidget/getwidget.dart';
 import 'package:image_picker/image_picker.dart';
@@ -117,14 +118,34 @@ class AppService {
     await FirebaseAuth.instance
         .signInWithEmailAndPassword(email: email, password: password)
         .then((value) {
-          context.loaderOverlay.hide();
-          Get.offAll(const MainHome());
-            Get.snackbar('Login Success','WelCome ${value.user!.uid}');
-        })
-        .catchError((onError) {
+      context.loaderOverlay.hide();
+      Get.offAll(const MainHome());
+      Get.snackbar('Login Success', 'WelCome ${value.user!.uid}');
+    }).catchError((onError) {
       context.loaderOverlay.hide();
       Get.snackbar(onError.code, onError.message,
           backgroundColor: GFColors.DANGER, colorText: GFColors.WHITE);
     });
+  }
+
+  Future<void> processFindLocation() async {
+    bool locationService = await Geolocator.isLocationServiceEnabled();
+
+    if (locationService) {
+      // open location
+    } else {
+      // close location
+      AppDialog().normalDailog(
+          title: 'Open Service',
+          contentWidget: const WidgetText(data: 'เปิด Loation'),
+          secondWidget: WidgetButton(
+            label: 'Open Service',
+            pressFunc: () {
+
+
+              
+            },
+          ));
+    }
   }
 }
