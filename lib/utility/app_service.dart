@@ -4,6 +4,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:expsugarone/models/respon_model.dart';
 import 'package:expsugarone/models/user_api_model.dart';
 import 'package:expsugarone/models/user_model.dart';
+import 'package:expsugarone/states/main_home.dart';
 import 'package:expsugarone/utility/app_constant.dart';
 import 'package:expsugarone/utility/app_controller.dart';
 import 'package:expsugarone/utility/app_dialog.dart';
@@ -102,6 +103,25 @@ class AppService {
         });
       });
     }).catchError((onError) {
+      context.loaderOverlay.hide();
+      Get.snackbar(onError.code, onError.message,
+          backgroundColor: GFColors.DANGER, colorText: GFColors.WHITE);
+    });
+  }
+
+  Future<void> processCheckLonin({
+    required String email,
+    required String password,
+    required BuildContext context,
+  }) async {
+    await FirebaseAuth.instance
+        .signInWithEmailAndPassword(email: email, password: password)
+        .then((value) {
+          context.loaderOverlay.hide();
+          Get.offAll(const MainHome());
+            Get.snackbar('Login Success','WelCome ${value.user!.uid}');
+        })
+        .catchError((onError) {
       context.loaderOverlay.hide();
       Get.snackbar(onError.code, onError.message,
           backgroundColor: GFColors.DANGER, colorText: GFColors.WHITE);

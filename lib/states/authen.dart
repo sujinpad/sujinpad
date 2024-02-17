@@ -1,6 +1,7 @@
 import 'package:expsugarone/states/create_new_account.dart';
 import 'package:expsugarone/utility/app_constant.dart';
 import 'package:expsugarone/utility/app_controller.dart';
+import 'package:expsugarone/utility/app_service.dart';
 import 'package:expsugarone/widgets/widget_button.dart';
 import 'package:expsugarone/widgets/widget_form.dart';
 import 'package:expsugarone/widgets/widget_icon_button.dart';
@@ -9,6 +10,7 @@ import 'package:expsugarone/widgets/widget_text.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:getwidget/getwidget.dart';
+import 'package:loader_overlay/loader_overlay.dart';
 
 class Authen extends StatefulWidget {
   const Authen({super.key});
@@ -24,42 +26,47 @@ class _AuthenState extends State<Authen> {
 //key ที่ใช้ในการเช็ค validate
   final formKey = GlobalKey<FormState>();
 
+  TextEditingController emailController = TextEditingController();
+  TextEditingController passwordController = TextEditingController();
+
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: GestureDetector(
-        onTap: () => FocusManager.instance.primaryFocus?.unfocus(),
-        child: ListView(
-          children: [
-            Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Container(
-                  margin: const EdgeInsets.only(top: 64),
-                  width: 250,
-                  child: Form(
-                    key: formKey,
-                    child: Column(
-                      children: [
-                        displayLogoAndAppName(),
-                        emailForm(),
-                        passwordForm(),
-                        loginButton()
-                      ],
+    return LoaderOverlay( 
+      child: Scaffold(
+        body: GestureDetector(
+          onTap: () => FocusManager.instance.primaryFocus?.unfocus(),
+          child: ListView(
+            children: [
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Container(
+                    margin: const EdgeInsets.only(top: 64),
+                    width: 250,
+                    child: Form(
+                      key: formKey,
+                      child: Column(
+                        children: [
+                          displayLogoAndAppName(),
+                          emailForm(),
+                          passwordForm(),
+                          loginButton()
+                        ],
+                      ),
                     ),
                   ),
-                ),
-              ],
-            ),
-          ],
+                ],
+              ),
+            ],
+          ),
         ),
-      ),
-      bottomSheet: WidgetButton(
-        label: 'Create New Accout',
-        pressFunc: () {
-          Get.to(const CreateNewAccount());
-        },
-        gfButtonType: GFButtonType.transparent,
+        bottomSheet: WidgetButton(
+          label: 'Create New Accout',
+          pressFunc: () {
+            Get.to(const CreateNewAccount());
+          },
+          gfButtonType: GFButtonType.transparent,
+        ),
       ),
     );
   }
@@ -72,7 +79,15 @@ class _AuthenState extends State<Authen> {
         label: 'login',
         pressFunc: () {
           if (formKey.currentState!.validate()) {
-            
+
+            // Start Process
+             context.loaderOverlay.show();
+
+             
+            AppService().processCheckLonin(
+                email: emailController.text,
+                password: passwordController.text,
+                context: context);
           }
         },
       ),
@@ -80,13 +95,15 @@ class _AuthenState extends State<Authen> {
   }
 
   Obx passwordForm() {
-    return Obx(() => WidgetForm(validatorFunc: (p0) {
-        if (p0?.isEmpty ?? true) {
-          return 'กรอกรหัสด้วยนะจ๊ะ';
-        } else {
-          return null;
-        }
-    },
+    return Obx(() => WidgetForm(
+          textEditingController: passwordController,
+          validatorFunc: (p0) {
+            if (p0?.isEmpty ?? true) {
+              return 'กรอกรหัสด้วยนะจ๊ะ';
+            } else {
+              return null;
+            }
+          },
           hint: 'Password :',
           obsecu: appController.redEye.value,
           sufficWidget: WidgetIconButton(
@@ -102,6 +119,7 @@ class _AuthenState extends State<Authen> {
 
   WidgetForm emailForm() {
     return WidgetForm(
+      textEditingController: emailController,
       validatorFunc: (p0) {
         if (p0?.isEmpty ?? true) {
           return 'กรอกอีเมล์ด้วยนะจ๊ะ';
