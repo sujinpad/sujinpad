@@ -11,6 +11,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:getwidget/getwidget.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:loader_overlay/loader_overlay.dart';
 
 class CreateNewAccount extends StatefulWidget {
   const CreateNewAccount({super.key});
@@ -38,81 +39,90 @@ class _CreateNewAccountState extends State<CreateNewAccount> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: const WidgetText(data: 'Create New Account'),
-      ),
-      body: ListView(
-        children: [
-          displayImages(),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.center,
+    return LoaderOverlay( 
+      child: Scaffold( 
+        appBar: AppBar(
+          title: const WidgetText(data: 'Create New Account'),
+        ),
+        body: GestureDetector(
+          onTap: () => FocusManager.instance.primaryFocus?.unfocus(),
+          child: ListView(
             children: [
-              SizedBox(
-                width: Get.width * 0.7,
-                child: Form(
-                  key: formKey,
-                  child: Column(
-                    children: [
-                      WidgetForm(
-                        textEditingController: nameController,
-                        validatorFunc: (p0) {
-                          if (p0?.isEmpty ?? true) {
-                            return 'โปรดกรอกชื่อด้วยนะจ๊ะ';
-                          } else {
-                            return null;
-                          }
-                        },
-                        labelWidget: WidgetText(data: 'Display Name'),
+              displayImages(),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  SizedBox(
+                    width: Get.width * 0.7,
+                    child: Form(
+                      key: formKey,
+                      child: Column(
+                        children: [
+                          WidgetForm(
+                            textEditingController: nameController,
+                            validatorFunc: (p0) {
+                              if (p0?.isEmpty ?? true) {
+                                return 'โปรดกรอกชื่อด้วยนะจ๊ะ';
+                              } else {
+                                return null;
+                              }
+                            },
+                            labelWidget: WidgetText(data: 'Display Name'),
+                          ),
+                          WidgetForm(
+                            textEditingController: emailController,
+                            validatorFunc: (p0) {
+                              if (p0?.isEmpty ?? true) {
+                                return 'โปรดE-mail ด้วยนะจ๊ะ';
+                              } else {
+                                return null;
+                              }
+                            },
+                            labelWidget: WidgetText(data: 'Email'),
+                          ),
+                          WidgetForm(
+                            textEditingController: passwordController,
+                            validatorFunc: (p0) {
+                              if (p0?.isEmpty ?? true) {
+                                return 'โปรด Passwordด้วยนะจ๊ะ';
+                              } else {
+                                return null;
+                              }
+                            },
+                            labelWidget: WidgetText(data: 'Password'),
+                          ),
+                          WidgetButton(
+                            label: 'Create',
+                            pressFunc: () {
+                              if (appController.files.isEmpty) {
+                                Get.snackbar(
+                                  'ยังไม่มีรูปภาพ',
+                                  'เลือกรูปภาพ',
+                                  backgroundColor: GFColors.DANGER,
+                                  colorText: GFColors.WHITE,
+                                );
+                              } else if (formKey.currentState!.validate()) {
+
+                                 context.loaderOverlay.show();
+
+                                AppService().processCreateNewAccount(                             
+                                  name: nameController.text,
+                                  email: emailController.text,
+                                  password: passwordController.text,
+                                  context: context,
+                                );
+                              }
+                            },
+                          )
+                        ],
                       ),
-                      WidgetForm(
-                        textEditingController: emailController,
-                        validatorFunc: (p0) {
-                          if (p0?.isEmpty ?? true) {
-                            return 'โปรดE-mail ด้วยนะจ๊ะ';
-                          } else {
-                            return null;
-                          }
-                        },
-                        labelWidget: WidgetText(data: 'Email'),
-                      ),
-                      WidgetForm(
-                        textEditingController: passwordController,
-                        validatorFunc: (p0) {
-                          if (p0?.isEmpty ?? true) {
-                            return 'โปรด Passwordด้วยนะจ๊ะ';
-                          } else {
-                            return null;
-                          }
-                        },
-                        labelWidget: WidgetText(data: 'Password'),
-                      ),
-                      WidgetButton(
-                        label: 'Create',
-                        pressFunc: () {
-                          if (appController.files.isEmpty) {
-                            Get.snackbar(
-                              'ยังไม่มีรูปภาพ',
-                              'เลือกรูปภาพ',
-                              backgroundColor: GFColors.DANGER,
-                              colorText: GFColors.WHITE,
-                            );
-                          } else if (formKey.currentState!.validate()) {
-                            AppService().processCreateNewAccount(
-                              name: nameController.text,
-                               email: emailController.text,
-                                password: passwordController.text,
-                            );
-                          }
-                        },
-                      )
-                    ],
+                    ),
                   ),
-                ),
+                ],
               ),
             ],
           ),
-        ],
+        ),
       ),
     );
   }
