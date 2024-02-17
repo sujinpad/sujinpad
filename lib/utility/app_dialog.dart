@@ -23,6 +23,6 @@ class AppDialog {
               pressFunc: () => Get.back(),
             )
       ],
-    ));
+    ),barrierDismissible: false);
   }
 }

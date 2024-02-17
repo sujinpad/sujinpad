@@ -133,6 +133,31 @@ class AppService {
 
     if (locationService) {
       // open location
+
+      LocationPermission locationPermission =
+          await Geolocator.checkPermission();
+
+      if (locationPermission == LocationPermission.deniedForever) {
+        //deniedForever
+        dailogCallPermission();
+      } else {
+        //Dened ,Alway , one
+        if (locationPermission == LocationPermission.denied) {
+          //Dened
+          locationPermission = await Geolocator.requestPermission();
+          if ((locationPermission != LocationPermission.always) &&
+              (locationPermission != LocationPermission.whileInUse)) {
+                 dailogCallPermission();
+          } else {
+             Position position = await Geolocator.getCurrentPosition();
+            appController.positions.add(position);
+          }
+        } else {
+          // Alway , one
+          Position position = await Geolocator.getCurrentPosition();
+          appController.positions.add(position);
+        }
+      }
     } else {
       // close location
       AppDialog().normalDailog(
@@ -140,12 +165,23 @@ class AppService {
           contentWidget: const WidgetText(data: 'เปิด Loation'),
           secondWidget: WidgetButton(
             label: 'Open Service',
-            pressFunc: () {
-
-
-              
+            pressFunc: () async {
+              await Geolocator.openLocationSettings();
+              exit(0);
             },
           ));
     }
+  }
+
+  void dailogCallPermission() {
+    AppDialog().normalDailog(
+        title: 'Open Permission',
+        secondWidget: WidgetButton(
+          label: 'Open Permission',
+          pressFunc: () async {
+            await Geolocator.openAppSettings();
+            exit(0);
+          },
+        ));
   }
 }
