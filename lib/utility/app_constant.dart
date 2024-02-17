@@ -5,6 +5,8 @@ class AppConstant {
 
   static Color fieldColor = Colors.grey.withOpacity(0.5);
 
+  static String urlAPI = 'http://110.164.149.104:9295/fapi/userFlutter';
+
   //method ตัวแปรกลุ่ม คล้ายๆ CSS
 
   TextStyle h1Style() {
