@@ -229,7 +229,8 @@ class AppService {
     await FirebaseFirestore.instance
         .collection('user')
         .doc(user!.uid)
-        .collection('area').orderBy('timestamp',descending: true)
+        .collection('area')
+        .orderBy('timestamp', descending: true)
         .get()
         .then((value) {
       if (appController.areaModels.isNotEmpty) {
@@ -241,26 +242,35 @@ class AppService {
           AreaModel areaModel = AreaModel.fromMap(element.data());
 
           appController.areaModels.add(areaModel);
-
-
-
-
         }
       }
     });
   }
 
-String convertTimeToString({required Timestamp timestamp}){
+  String convertTimeToString({required Timestamp timestamp}) {
+    DateFormat dateFormat = DateFormat('yyyy-MM-dd HH:mm:ss');
+    String result = dateFormat.format(timestamp.toDate());
+    return result;
+  }
 
-DateFormat dateFormat = DateFormat('yyyy-MM-dd HH:mm:ss');
-String result = dateFormat.format(timestamp.toDate());
-return result;
+// AreaModel? = AreaModel ที่มีโอกาศเป็นค่า null
+  Future<AreaModel?> findQRcode({required String qrCode}) async { 
+    AreaModel? areaModel;
+    var user = FirebaseAuth.instance.currentUser;
 
 
+// วิธี where
+    var response =
+        await FirebaseFirestore.instance.collection('user').doc(user!.uid).collection('area').where('qrcode',isEqualTo: qrCode).get();
+
+if (response.docs.isNotEmpty) {
+  for (var element in response.docs) {
+    areaModel = AreaModel.fromMap(element.data());
+  }
 }
+return areaModel;
 
 
 
-
-
+  }
 }
