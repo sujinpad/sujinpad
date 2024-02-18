@@ -33,7 +33,10 @@ class _WidgetMapState extends State<WidgetMap> {
           ),
           onMapCreated: (controller) {},
           myLocationEnabled: widget.myLocationEnable ?? false,
-          markers: appController.mapMarkers.isEmpty ? <Marker>{} : Set<Marker>.of(appController.mapMarkers.values) ,
+          markers: appController.mapMarkers.isEmpty
+              ? <Marker>{}
+              : Set<Marker>.of(appController.mapMarkers.values),
+              polygons: appController.setPolygon,
         ));
   }
 }

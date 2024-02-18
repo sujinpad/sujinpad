@@ -1,6 +1,9 @@
 import 'dart:io';
+import 'dart:math';
+import 'dart:ui';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:expsugarone/models/area_model.dart';
 import 'package:expsugarone/models/respon_model.dart';
 import 'package:expsugarone/models/user_api_model.dart';
 import 'package:expsugarone/models/user_model.dart';
@@ -16,6 +19,7 @@ import 'package:flutter/material.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:get/get.dart';
 import 'package:getwidget/getwidget.dart';
+import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:dio/dio.dart' as dio;
 import 'package:loader_overlay/loader_overlay.dart';
@@ -147,9 +151,9 @@ class AppService {
           locationPermission = await Geolocator.requestPermission();
           if ((locationPermission != LocationPermission.always) &&
               (locationPermission != LocationPermission.whileInUse)) {
-                 dailogCallPermission();
+            dailogCallPermission();
           } else {
-             Position position = await Geolocator.getCurrentPosition();
+            Position position = await Geolocator.getCurrentPosition();
             appController.positions.add(position);
           }
         } else {
@@ -183,5 +187,37 @@ class AppService {
             exit(0);
           },
         ));
+  }
+
+  Future<void> processSaveArea(
+      {required String nameArea, required List<LatLng> latlngs}) async {
+    var geoPoint = <GeoPoint>[];
+    for (var element in latlngs) {
+      geoPoint.add(GeoPoint(element.latitude, element.longitude));
+    }
+
+    AreaModel areaModel = AreaModel(
+      nameArea: nameArea,
+      timestamp: Timestamp.fromDate(DateTime.now()),
+      geoPoint: geoPoint,
+      qrCode: 'srs${Random().nextInt(100000)}',
+    );
+
+    var user = FirebaseAuth.instance.currentUser;
+    String uidLogin = user!.uid;
+
+    print('##  uidLogin --> $uidLogin');
+    print('##  areaModel --> ${areaModel.toMap()}');
+
+    await FirebaseFirestore.instance
+        .collection('user')
+        .doc(uidLogin)
+        .collection('area')
+        .doc()
+        .set(areaModel.toMap())
+        .then((value) {
+      Get.snackbar('Add Success', 'ThankYou');
+      appController.indexBody.value = 0;
+    });
   }
 }

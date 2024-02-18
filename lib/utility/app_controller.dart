@@ -15,5 +15,11 @@ RxList<Position> positions = <Position>[].obs;
 
 RxMap<MarkerId,Marker> mapMarkers = <MarkerId,Marker>{}.obs;
 
+RxBool displayAddMarker = true.obs;
+RxBool displaySave = false.obs;
+
+RxSet<Polygon> setPolygon =  <Polygon>{}.obs;
+
+
 
 }

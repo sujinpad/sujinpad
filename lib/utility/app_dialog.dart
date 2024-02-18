@@ -19,7 +19,7 @@ class AppDialog {
         firstWidget ?? const SizedBox(),
         secondWidget ??
             WidgetButton(
-              label: 'OK',
+              label: firstWidget!=null ?  'Cancel' : 'OK',
               pressFunc: () => Get.back(),
             )
       ],
