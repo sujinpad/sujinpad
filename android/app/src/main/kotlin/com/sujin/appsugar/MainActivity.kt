@@ -1,4 +1,4 @@
-package com.khing.expsugarone
+package com.sujin.appsugar
 
 import io.flutter.embedding.android.FlutterActivity
 

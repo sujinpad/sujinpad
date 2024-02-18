@@ -1,21 +1,21 @@
 {
   "project_info": {
-    "project_number": "489212645252",
-    "project_id": "expproject-acdab",
-    "storage_bucket": "expproject-acdab.appspot.com"
+    "project_number": "702603243233",
+    "project_id": "sujinproject-537e3",
+    "storage_bucket": "sujinproject-537e3.appspot.com"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:489212645252:android:672f9af32d27bea30997d1",
+        "mobilesdk_app_id": "1:702603243233:android:a9a4ca1a22689d0bd491a0",
         "android_client_info": {
-          "package_name": "com.khing.expsugarone"
+          "package_name": "com.sujin.appsugar"
         }
       },
       "oauth_client": [],
       "api_key": [
         {
-          "current_key": "AIzaSyCEi7n2teCj-G47yx99fEmz6hC69UyO_ak"
+          "current_key": "AIzaSyBM2Do1wvBK9hgS6rXOyHHmZQlul5EYvVI"
         }
       ],
       "services": {
