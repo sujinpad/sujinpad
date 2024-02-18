@@ -261,7 +261,8 @@ class AppService {
 
 // วิธี where
     var response =
-        await FirebaseFirestore.instance.collection('user').doc(user!.uid).collection('area').where('qrcode',isEqualTo: qrCode).get();
+        // await FirebaseFirestore.instance.collection('user').doc(user!.uid).collection('area').where('qrcode',isEqualTo: qrCode).get();
+        await FirebaseFirestore.instance.collection('user').doc(user!.uid).collection('area').where('qrCode',isEqualTo: qrCode).get();
 
 if (response.docs.isNotEmpty) {
   for (var element in response.docs) {

@@ -44,27 +44,42 @@ class _QRreaderState extends State<QRreader> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(),
-      body: SizedBox(
-        width: 250,
-        height: 250,
-        child: QRView(
-          key: qrkey,
-          onQRViewCreated: (p0) {
-            qrViewController = p0;
-            qrViewController!.scannedDataStream.listen((event) {
-              if (event.code != null) {
-                String result = event.code!;
-                qrViewController!.stopCamera();
+      body: Row( mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          SizedBox(
+            width: 250,
+            height: 250,
+            child: QRView(
+              key: qrkey,
+              onQRViewCreated: (p0) {
+                qrViewController = p0;
+                qrViewController!.scannedDataStream.listen((event) {
+                  if (event.code != null) {
+                    String result = event.code!;
+                    qrViewController!.stopCamera();
+          
+                    AppService().findQRcode(qrCode: result).then((value) {
 
-                AppService().findQRcode(qrCode: result).then((value) {
-                  if (value == null) {
-                    AppDialog().normalDailog(title: 'ไม่มีข้อมูล');
-                  } else {}
+                      print('ค่า value --> $value');
+
+                      if (value == null) {
+          
+                         print('ค่า result --> $result');
+                        
+                       
+                        AppDialog().normalDailog(title: 'ไม่มีข้อมูล');
+                      } else {
+          
+                        AppDialog().normalDailog(title: 'พบข้อมูล $result');
+          
+                      }
+                    });
+                  }
                 });
-              }
-            });
-          },
-        ),
+              },
+            ),
+          ),
+        ],
       ),
     );
   }
