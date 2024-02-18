@@ -1,4 +1,4 @@
-import 'package:expsugarone/widgets/body_list_user.dart';
+import 'package:expsugarone/widgets/body_list_area.dart';
 import 'package:expsugarone/widgets/body_location.dart';
 import 'package:expsugarone/widgets/body_porofile.dart';
 import 'package:flutter/material.dart';
@@ -7,7 +7,7 @@ class AppConstant {
   //field ตัวแปรเดี่ยว สี ขนาดแชร์ให้ข้างบ้านใช้
 
   static List<String> titles = <String>[
-    'List User',
+    'List Aera',
     'My Location',
     'My Profile',
   ];
@@ -19,7 +19,7 @@ class AppConstant {
   ];
 
   static List<Widget> bodys = <Widget>[
-    const BodyListUser(),
+    const BodyListArea(),
     const BodyLocation(),
     const BodyProfile(),
   ];

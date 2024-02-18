@@ -18,10 +18,12 @@ import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:get/get.dart';
+import 'package:get/get_connect/http/src/request/request.dart';
 import 'package:getwidget/getwidget.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:dio/dio.dart' as dio;
+import 'package:intl/intl.dart';
 import 'package:loader_overlay/loader_overlay.dart';
 
 class AppService {
@@ -220,4 +222,45 @@ class AppService {
       appController.indexBody.value = 0;
     });
   }
+
+  Future<void> processReadAllArea() async {
+    var user = FirebaseAuth.instance.currentUser;
+
+    await FirebaseFirestore.instance
+        .collection('user')
+        .doc(user!.uid)
+        .collection('area').orderBy('timestamp',descending: true)
+        .get()
+        .then((value) {
+      if (appController.areaModels.isNotEmpty) {
+        appController.areaModels.clear();
+      }
+
+      if (value.docs.isNotEmpty) {
+        for (var element in value.docs) {
+          AreaModel areaModel = AreaModel.fromMap(element.data());
+
+          appController.areaModels.add(areaModel);
+
+
+
+
+        }
+      }
+    });
+  }
+
+String convertTimeToString({required Timestamp timestamp}){
+
+DateFormat dateFormat = DateFormat('yyyy-MM-dd HH:mm:ss');
+String result = dateFormat.format(timestamp.toDate());
+return result;
+
+
+}
+
+
+
+
+
 }
